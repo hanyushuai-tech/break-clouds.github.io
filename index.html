@@ -1,46 +1,224 @@
----
-layout: page
-description: "「离开世界之前 一切都是过程」"
----
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Break Clouds — 突破云端，连接未来</title>
+<meta name="description" content="Break Clouds 是一站式 AI 驱动的云端协作平台，为下一代创作者和团队提供极速、智能、安全的数字体验。">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
 
-{% for post in paginator.posts %}
-<div class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">
-            {{ post.title }}
-        </h2>
-        {% if post.subtitle %}
-        <h3 class="post-subtitle">
-            {{ post.subtitle }}
-        </h3>
-        {% endif %}
-        <div class="post-content-preview">
-            {% if post.lang == 'en' %}
-                {{ post.content | strip_html | truncate:300 }}
-            {% else %}
-                {{ post.content | strip_html | truncate:200 }}
-            {% endif %}
-        </div>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <path d="M4 24L12 8L18 18L24 4L28 16" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="logo-grad" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+      </svg>
+      Break Clouds
     </a>
-    <p class="post-meta">
-        Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}
-    </p>
-</div>
-<hr>
-{% endfor %}
+    <div class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#products">产品</a>
+      <a href="#pricing">定价</a>
+      <a href="#docs">文档</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="btn-ghost">登录</a>
+      <a href="#" class="btn-primary">免费开始</a>
+    </div>
+  </div>
+</nav>
 
-<!-- Pager -->
-{% if paginator.total_pages > 1 %}
-<ul class="pager">
-    {% if paginator.previous_page %}
-    <li class="previous">
-        <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Newer Posts</a>
-    </li>
-    {% endif %}
-    {% if paginator.next_page %}
-    <li class="next">
-        <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Older Posts &rarr;</a>
-    </li>
-    {% endif %}
-</ul>
-{% endif %}
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span> 全新 Break Cloud 2.0 现已发布
+    </div>
+    <h1>突破云端<span class="gradient-text">构建未来</span></h1>
+    <p class="hero-desc">极速部署、智能扩展、安全可靠 —— 为 AI 时代打造的新一代云平台，让你的每一个创意都能瞬间触达全球。</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-primary btn-lg">立即开始 →</a>
+      <a href="#" class="btn-outline btn-lg">预约演示</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span>150K+</span> 开发者</div>
+      <div class="stat"><span>99.99%</span> 可用性</div>
+      <div class="stat"><span>50M+</span> 部署次数</div>
+    </div>
+  </div>
+  <div class="hero-preview">
+    <div class="preview-window">
+      <div class="preview-bar"><span></span><span></span><span></span></div>
+      <div class="preview-code">
+<span class="line"><span class="keyword">import</span> breakclouds</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> <span class="fn">BreakCloud</span>({</span>
+<span class="line">  region: <span class="string">"auto"</span>,</span>
+<span class="line">  scale: <span class="string">"auto"</span>,</span>
+<span class="line">  ai: <span class="string">"enabled"</span></span>
+<span class="line">})</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">await</span> app.<span class="fn">deploy</span>()</span>
+<span class="line"><span class="comment">// 3 秒部署到全球 50+ 节点</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2 class="section-title">一体化<span class="gradient-text">云平台</span></h2>
+  <p class="section-desc">从部署到扩展，从监控到优化，你所需的一切都在这里。</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">&#9889;</div>
+      <h3>极速部署</h3>
+      <p>毫秒级全球边缘网络分发，让你的应用在世界各地都快如闪电。支持 50+ 区域自动部署。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#129504;</div>
+      <h3>AI 驱动</h3>
+      <p>内置大语言模型推理引擎，一键为你的产品接入 GPT、Claude 等前沿 AI 能力。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#128274;</div>
+      <h3>企业级安全</h3>
+      <p>SOC 2 Type II 认证，端到端加密，自动 DDoS 防护，让你的数据坚不可摧。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#128200;</div>
+      <h3>智能扩展</h3>
+      <p>基于实时流量的预测式自动扩展，应对突发流量不再需要手动干预。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#128295;</div>
+      <h3>无服务器函数</h3>
+      <p>用你熟悉的语言编写后端逻辑，零运维、按需付费、自动伸缩。</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">&#128202;</div>
+      <h3>实时分析</h3>
+      <p>毫秒级日志查询、自定义仪表板、智能告警，掌控一切系统动态。</p>
+    </div>
+  </div>
+</section>
+
+<section class="showcase" id="products">
+  <h2 class="section-title">受到<span class="gradient-text">全球顶尖团队</span>信赖</h2>
+  <p class="section-desc">从初创公司到世界 500 强，各类团队都在使用 Break Clouds 构建未来。</p>
+  <div class="logo-grid">
+    <div class="logo-item">Acme Corp</div>
+    <div class="logo-item">Stellar AI</div>
+    <div class="logo-item">NovaTech</div>
+    <div class="logo-item">QuantumLab</div>
+    <div class="logo-item">Zenith</div>
+    <div class="logo-item">Atlas</div>
+    <div class="logo-item">Polaris</div>
+    <div class="logo-item">Meridian</div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2 class="section-title">简洁<span class="gradient-text">透明的定价</span></h2>
+  <p class="section-desc">没有隐藏费用，不需要信用卡，随时随地免费开始。</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="plan-name">Hobby</div>
+      <div class="plan-price">免费</div>
+      <div class="plan-desc">适合个人项目和学习</div>
+      <ul>
+        <li>&check; 每月 100GB 流量</li>
+        <li>&check; 3 个项目</li>
+        <li>&check; 社区支持</li>
+        <li>&check; 自动 HTTPS</li>
+      </ul>
+      <a href="#" class="btn-outline btn-block">免费开始</a>
+    </div>
+    <div class="pricing-card popular">
+      <div class="popular-badge">最受欢迎</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price">$20<span>/月</span></div>
+      <div class="plan-desc">适合专业开发者</div>
+      <ul>
+        <li>&check; 每月 1TB 流量</li>
+        <li>&check; 无限项目</li>
+        <li>&check; 优先支持</li>
+        <li>&check; AI 功能全开</li>
+        <li>&check; 高级分析面板</li>
+      </ul>
+      <a href="#" class="btn-primary btn-block">开始 Pro</a>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">定制</div>
+      <div class="plan-desc">适合大型组织和特殊需求</div>
+      <ul>
+        <li>&check; 无限流量</li>
+        <li>&check; 私有部署</li>
+        <li>&check; 专属客户经理</li>
+        <li>&check; SLA 保障</li>
+        <li>&check; SSO & SAML</li>
+      </ul>
+      <a href="#" class="btn-outline btn-block">联系我们</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <h2>准备好突破云端了吗？</h2>
+    <p>数万名开发者已经在 Break Clouds 上构建下一代应用。加入他们，今天就开始。</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary btn-lg">免费开始</a>
+      <a href="#" class="btn-outline btn-lg btn-white">查看文档</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="margin-bottom:12px;display:inline-block;">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <path d="M4 24L12 8L18 18L24 4L28 16" stroke="url(#logo-grad2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs><linearGradient id="logo-grad2" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+        </svg>
+        Break Clouds
+      </a>
+      <p style="color:#888;font-size:14px;">突破云端，连接未来</p>
+    </div>
+    <div class="footer-col">
+      <h4>产品</h4>
+      <a href="#">边缘计算</a>
+      <a href="#">无服务器</a>
+      <a href="#">AI 推理</a>
+      <a href="#">数据库</a>
+    </div>
+    <div class="footer-col">
+      <h4>资源</h4>
+      <a href="#">文档</a>
+      <a href="#">API 参考</a>
+      <a href="#">教程</a>
+      <a href="#">博客</a>
+    </div>
+    <div class="footer-col">
+      <h4>公司</h4>
+      <a href="#">关于我们</a>
+      <a href="#">招聘</a>
+      <a href="#">联系我们</a>
+      <a href="#">法律条款</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Break Clouds. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
