@@ -6,6 +6,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Break Clouds — AI · 数据科学 · 技术探索</title>
 <meta name="description" content="Break Clouds 个人品牌站 — 专注数据处理与 AI 研究，分享 LLM、Agent、RAG 项目与技术思考。">
+<meta name="author" content="Break Clouds">
+<meta name="keywords" content="AI,LLM,Data Science,Agent,RAG,Python,Machine Learning,数据科学,大语言模型">
+<link rel="canonical" href="https://breakclouds.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://breakclouds.com/">
+<meta property="og:title" content="Break Clouds — AI · 数据科学 · 技术探索">
+<meta property="og:description" content="专注数据处理与 AI 研究，分享 LLM、Agent、RAG 项目与技术思考。">
+<meta property="og:site_name" content="Break Clouds">
+<meta property="og:locale" content="zh_CN">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Break Clouds — AI · 数据科学 · 技术探索">
+<meta name="twitter:description" content="专注数据处理与 AI 研究，分享 LLM、Agent、RAG 项目与技术思考。">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Break Clouds",
+  "url": "https://breakclouds.com",
+  "sameAs": [
+    "https://github.com/hanyushuai-tech"
+  ],
+  "jobTitle": "AI Developer & Data Scientist",
+  "description": "数据科学家 / AI 开发者 / 学生 / 技术爱好者",
+  "email": "kings.land.no1@gmail.com",
+  "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Large Language Models", "Data Science", "Python", "RAG", "AI Agent"]
+}
+</script>
+
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +47,7 @@
 </head>
 <body>
 
-<nav class="nav">
+<nav class="nav" id="navbar">
   <div class="nav-inner">
     <a href="#" class="logo">
       <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
@@ -22,23 +56,40 @@
       </svg>
       Break Clouds
     </a>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
       <a href="#about">关于</a>
       <a href="#research">研究</a>
       <a href="#skills">技能</a>
       <a href="#projects">项目</a>
       <a href="#contact">联系</a>
     </div>
-    <div class="nav-actions">
-      <a href="https://github.com/hanyushuai-tech" target="_blank" class="btn-ghost">GitHub</a>
+    <div class="nav-actions" id="navActions">
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
       <a href="#contact" class="btn-primary">联系我</a>
     </div>
+    <button class="hamburger" id="hamburger" aria-label="菜单" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobileOverlay">
+  <div class="mobile-nav-content">
+    <a href="#about" class="mobile-nav-link">关于</a>
+    <a href="#research" class="mobile-nav-link">研究</a>
+    <a href="#skills" class="mobile-nav-link">技能</a>
+    <a href="#projects" class="mobile-nav-link">项目</a>
+    <a href="#contact" class="mobile-nav-link">联系</a>
+    <div class="mobile-nav-divider"></div>
+    <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="mobile-nav-link">GitHub</a>
+    <a href="#contact" class="btn-primary mobile-cta">联系我</a>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-content">
+  <div class="hero-content reveal">
     <div class="hero-badge">
       <span class="badge-dot"></span> 持续探索 AI 与数据科学的前沿
     </div>
@@ -56,7 +107,7 @@
       <span class="tag">PyTorch</span>
     </div>
   </div>
-  <div class="hero-preview">
+  <div class="hero-preview reveal">
     <div class="preview-window">
       <div class="preview-bar"><span></span><span></span><span></span></div>
       <div class="preview-code">
@@ -75,7 +126,7 @@
   </div>
 </section>
 
-<section class="about" id="about">
+<section class="about reveal" id="about">
   <h2 class="section-title">关于<span class="gradient-text">我</span></h2>
   <div class="about-grid">
     <div class="about-text">
@@ -83,8 +134,8 @@
       <p>我的研究兴趣围绕 <strong>大语言模型</strong> 展开：包括 LLM 推理与微调、AI Agent 架构设计、RAG 检索增强生成，以及记忆系统在对话 Agent 中的应用。</p>
       <p>我相信 AI 正在重塑每一个行业，而我希望成为这场变革的参与者与建设者——用扎实的数据能力和前沿的模型技术，把想法变成可运行的项目。</p>
       <div class="about-stats">
-        <div class="astat"><span>10+</span> 项目</div>
-        <div class="astat"><span>100+</span> LLM Apps 合集</div>
+        <div class="astat"><span>5+</span> 项目仓库</div>
+        <div class="astat"><span>100+</span> LLM Apps 研习</div>
         <div class="astat"><span>∞</span> 好奇心</div>
       </div>
     </div>
@@ -93,7 +144,7 @@
       <h3>Break Clouds</h3>
       <p class="about-role">AI Developer & Data Scientist</p>
       <div class="about-links">
-        <a href="https://github.com/hanyushuai-tech" target="_blank">GitHub</a>
+        <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener">GitHub</a>
         <a href="mailto:kings.land.no1@gmail.com">邮箱</a>
         <a href="https://breakclouds.com">Website</a>
       </div>
@@ -101,7 +152,7 @@
   </div>
 </section>
 
-<section class="skills" id="research">
+<section class="skills reveal" id="research">
   <h2 class="section-title">研究<span class="gradient-text">方向</span> &amp; 数据<span class="gradient-text">能力</span></h2>
   <p class="section-desc">以 LLM 为核心的研究探索，结合扎实的数据处理与分析功底</p>
   <div class="skill-cats">
@@ -120,7 +171,7 @@
     <div class="skill-cat">
       <h3>🧪 研究实践</h3>
       <div class="skill-tags">
-        <span>《Dive into LLMs》教程实践</span><span>Awesome LLM Apps 合集</span><span>Agent 记忆模块开发</span><span>房地产市场数据探索</span><span>模型部署与 API 开发</span>
+        <span>《Dive into LLMs》教程实践</span><span>Awesome LLM Apps 合集研习</span><span>Agent 记忆模块开发</span><span>房地产市场数据探索</span><span>模型部署与 API 开发</span>
       </div>
     </div>
     <div class="skill-cat">
@@ -132,7 +183,7 @@
   </div>
 </section>
 
-<section class="skills" id="skills">
+<section class="skills reveal" id="skills">
   <h2 class="section-title">技能<span class="gradient-text">栈</span></h2>
   <p class="section-desc">从数据科学到 AI/ML，跨领域的技术积累</p>
   <div class="skill-cats">
@@ -163,9 +214,9 @@
   </div>
 </section>
 
-<section class="projects" id="projects">
+<section class="projects reveal" id="projects">
   <h2 class="section-title">精选<span class="gradient-text">项目</span></h2>
-  <p class="section-desc">用技术解决实际问题，让创意落地</p>
+  <p class="section-desc">学习、探索与实践，让创意落地</p>
   <div class="project-grid">
 
     <div class="project-card">
@@ -175,7 +226,7 @@
         <h3>AI Agent 记忆系统</h3>
         <p>基于持久化存储的 AI Agent 记忆模块，支持上下文跨会话保留与智能检索，让 AI 对话更连贯、更个性化。</p>
         <div class="project-tech"><span>Python</span><span>LLM</span><span>Vector DB</span></div>
-        <a href="https://github.com/hanyushuai-tech/agentmemory" target="_blank" class="project-link">查看项目 →</a>
+        <a href="https://github.com/hanyushuai-tech/agentmemory" target="_blank" rel="noopener" class="project-link">查看项目 →</a>
       </div>
     </div>
 
@@ -184,9 +235,9 @@
       <div class="project-info">
         <div class="project-tag">RAG · Full-Stack</div>
         <h3>Awesome LLM Apps</h3>
-        <p>100+ AI Agent & RAG 应用合集，覆盖检索增强生成、多模态交互等前沿场景，可直接克隆运行。</p>
+        <p>100+ AI Agent & RAG 应用合集，覆盖检索增强生成、多模态交互等前沿场景，可直接克隆运行与二次开发。</p>
         <div class="project-tech"><span>RAG</span><span>Agent</span><span>Open Source</span></div>
-        <a href="https://github.com/hanyushuai-tech/awesome-llm-apps" target="_blank" class="project-link">查看项目 →</a>
+        <a href="https://github.com/hanyushuai-tech/awesome-llm-apps" target="_blank" rel="noopener" class="project-link">查看项目 →</a>
       </div>
     </div>
 
@@ -197,7 +248,7 @@
         <h3>房地产市场数据分析</h3>
         <p>基于 Pandas、Matplotlib、Seaborn 的房地产市场数据探索与可视化分析，挖掘价格趋势与影响因素。</p>
         <div class="project-tech"><span>Pandas</span><span>Matplotlib</span><span>Seaborn</span></div>
-        <a href="#" class="project-link">查看项目 →</a>
+        <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="project-link">更多项目 →</a>
       </div>
     </div>
 
@@ -208,28 +259,28 @@
         <h3>动手学大模型</h3>
         <p>《Dive into LLMs》系列教程实践，深入理解大语言模型原理，涵盖推理、微调、部署等核心环节。</p>
         <div class="project-tech"><span>LLM</span><span>Education</span><span>Tutorial</span></div>
-        <a href="https://github.com/hanyushuai-tech/dive-into-llms" target="_blank" class="project-link">查看项目 →</a>
+        <a href="https://github.com/hanyushuai-tech/dive-into-llms" target="_blank" rel="noopener" class="project-link">查看项目 →</a>
       </div>
     </div>
 
   </div>
 </section>
 
-<section class="contact" id="contact">
+<section class="contact reveal" id="contact">
   <div class="cta-bg"></div>
   <div class="cta-content">
     <h2>一起<span class="gradient-text">交流</span></h2>
     <p>无论是对 AI 的热情、项目合作的想法，还是单纯想聊技术，都欢迎联系。</p>
     <div class="contact-links">
-      <a href="https://github.com/hanyushuai-tech" target="_blank" class="contact-link-item">
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="contact-link-item">
         <span class="contact-icon">&#9906;</span>
         <span>GitHub</span>
         <small>hanyushuai-tech</small>
       </a>
-      <a href="mailto:kings.land.no1@gmail.com" class="contact-link-item">
+      <a href="mailto:kings.land.no1@gmail.com" class="contact-link-item" id="emailLink">
         <span class="contact-icon">&#9993;</span>
         <span>邮箱</span>
-        <small>kings.land.no1@gmail.com</small>
+        <small class="email-text">kings.land.no1@gmail.com</small>
       </a>
       <a href="https://breakclouds.com" class="contact-link-item">
         <span class="contact-icon">&#127758;</span>
@@ -251,13 +302,81 @@
     </a>
     <p>AI · Data Science · Tech Enthusiast</p>
     <div class="footer-social">
-      <a href="https://github.com/hanyushuai-tech" target="_blank">GitHub</a>
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:kings.land.no1@gmail.com">Email</a>
-      <a href="#">RSS</a>
     </div>
     <p class="footer-copy">&copy; 2026 Break Clouds</p>
   </div>
 </footer>
+
+<button class="scroll-top" id="scrollTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+(function() {
+  // ── Hamburger Menu ──────────────────────────────
+  var hamburger = document.getElementById('hamburger');
+  var overlay = document.getElementById('mobileOverlay');
+  var body = document.body;
+  var overlayLinks = overlay.querySelectorAll('.mobile-nav-link, .mobile-cta');
+
+  function openMenu() {
+    overlay.classList.add('active');
+    hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    overlay.classList.remove('active');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', function() {
+    if (overlay.classList.contains('active')) { closeMenu(); } else { openMenu(); }
+  });
+  overlayLinks.forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeMenu();
+  });
+
+  // ── Scroll-to-Top Button ────────────────────────
+  var scrollBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 500) {
+      scrollBtn.classList.add('visible');
+    } else {
+      scrollBtn.classList.remove('visible');
+    }
+  });
+  scrollBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Scroll Reveal ───────────────────────────────
+  var revealEls = document.querySelectorAll('.reveal');
+  var observer;
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el) { observer.observe(el); });
+  } else {
+    // Fallback for old browsers
+    revealEls.forEach(function(el) { el.classList.add('revealed'); });
+  }
+})();
+</script>
 
 </body>
 </html>
