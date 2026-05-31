@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目作品集 — Break Clouds</title>
+<meta name="description" content="Break Clouds 项目作品集 — AI Agent、RAG 应用、数据分析与大模型实践项目展示。">
+<meta name="author" content="Break Clouds">
+<meta name="keywords" content="AI,LLM,Agent,RAG,Data Science,Projects,项目,作品集">
+<link rel="canonical" href="https://breakclouds.com/projects.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://breakclouds.com/projects.html">
+<meta property="og:title" content="项目作品集 — Break Clouds">
+<meta property="og:description" content="AI Agent、RAG 应用、数据分析与大模型实践项目展示。">
+<meta property="og:site_name" content="Break Clouds">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="项目作品集 — Break Clouds">
+<meta name="twitter:description" content="AI Agent、RAG 应用、数据分析与大模型实践项目展示。">
+
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9PDBBTPZYR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9PDBBTPZYR');
+</script>
+
+<style>
+/* ===== Projects Page Specific ===== */
+.projects-hero {
+  min-height: 50vh; display: flex; align-items: center; justify-content: center;
+  position: relative; padding: 120px 24px 60px; text-align: center;
+}
+.projects-hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%, rgba(168,85,247,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.projects-hero-content { position: relative; z-index: 1; max-width: 640px; }
+.projects-hero h1 { font-size: clamp(36px, 5vw, 52px); font-weight: 900; letter-spacing: -2px; margin-bottom: 16px; }
+.projects-hero p { font-size: 17px; color: var(--text-dim); line-height: 1.7; }
+
+/* Filter Tabs */
+.filter-bar {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  padding: 0 24px; margin-bottom: 48px;
+}
+.filter-btn {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text-dim); font-size: 14px; font-weight: 500;
+  padding: 8px 20px; cursor: pointer; transition: all 0.25s;
+  font-family: inherit;
+}
+.filter-btn:hover { border-color: rgba(168,85,247,0.4); color: var(--text); }
+.filter-btn.active {
+  background: var(--gradient-1); border-color: transparent; color: #fff;
+  box-shadow: 0 0 20px rgba(168,85,247,0.3);
+}
+
+/* Project Showcase */
+.portfolio-section { max-width: 1100px; margin: 0 auto; }
+.portfolio-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+
+.portfolio-card {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; transition: border-color 0.3s, transform 0.3s;
+}
+.portfolio-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+
+.portfolio-visual {
+  position: relative; min-height: 300px;
+  background: linear-gradient(135deg, #1a1025 0%, #0d0d1a 100%);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.portfolio-visual::after {
+  font-size: 100px; opacity: 0.2;
+}
+.portfolio-visual.vis-agent::after { content: "🧠"; }
+.portfolio-visual.vis-rag::after { content: "🔗"; }
+.portfolio-visual.vis-data::after { content: "📊"; }
+.portfolio-visual.vis-llm::after { content: "📖"; }
+
+.portfolio-detail { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.portfolio-meta {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.portfolio-status {
+  font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+}
+.portfolio-status.active { background: rgba(39,201,63,0.15); color: #27c93f; }
+.portfolio-status.learning { background: rgba(255,189,46,0.15); color: #ffbd2e; }
+.portfolio-status.completed { background: rgba(168,85,247,0.15); color: var(--purple-light); }
+.portfolio-category {
+  font-size: 11px; color: var(--purple-light); font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.portfolio-detail h3 { font-size: 22px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+.portfolio-detail p { color: var(--text-dim); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+.portfolio-highlights {
+  list-style: none; padding: 0; margin-bottom: 24px;
+}
+.portfolio-highlights li {
+  color: var(--text-dim); font-size: 14px; line-height: 1.6;
+  padding: 4px 0; padding-left: 20px; position: relative;
+}
+.portfolio-highlights li::before {
+  content: ""; position: absolute; left: 0; top: 12px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--purple);
+}
+.portfolio-tech { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.portfolio-tech span {
+  background: rgba(168,85,247,0.08); color: var(--text-dim); font-size: 12px;
+  padding: 4px 12px; border-radius: 6px; font-weight: 500;
+}
+.portfolio-links { display: flex; gap: 16px; align-items: center; }
+.portfolio-links a {
+  color: var(--purple-light); text-decoration: none; font-size: 14px; font-weight: 600;
+  transition: color 0.2s; display: flex; align-items: center; gap: 6px;
+}
+.portfolio-links a:hover { color: var(--text); }
+
+/* Stats Bar */
+.stats-bar {
+  max-width: 1100px; margin: 0 auto 60px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  padding: 0 24px;
+}
+.stat-card {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px; text-align: center; transition: border-color 0.3s;
+}
+.stat-card:hover { border-color: rgba(168,85,247,0.4); }
+.stat-number {
+  font-size: 32px; font-weight: 900; background: var(--gradient-1);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .portfolio-card { grid-template-columns: 1fr; }
+  .portfolio-visual { min-height: 200px; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .stats-bar { grid-template-columns: 1fr; }
+  .filter-btn { padding: 6px 14px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <path d="M4 24L12 8L18 18L24 4L28 16" stroke="url(#logo-grad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="logo-grad" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+      </svg>
+      Break Clouds
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#about">关于</a>
+      <a href="index.html#research">研究</a>
+      <a href="index.html#skills">技能</a>
+      <a href="projects.html" style="color:var(--text)">项目</a>
+      <a href="index.html#contact">联系</a>
+    </div>
+    <div class="nav-actions" id="navActions">
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="btn-ghost">GitHub</a>
+      <a href="index.html#contact" class="btn-primary">联系我</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="菜单" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-overlay" id="mobileOverlay">
+  <div class="mobile-nav-content">
+    <a href="index.html#about" class="mobile-nav-link">关于</a>
+    <a href="index.html#research" class="mobile-nav-link">研究</a>
+    <a href="index.html#skills" class="mobile-nav-link">技能</a>
+    <a href="projects.html" class="mobile-nav-link">项目</a>
+    <a href="index.html#contact" class="mobile-nav-link">联系</a>
+    <div class="mobile-nav-divider"></div>
+    <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="mobile-nav-link">GitHub</a>
+    <a href="index.html#contact" class="btn-primary mobile-cta">联系我</a>
+  </div>
+</div>
+
+<section class="projects-hero">
+  <div class="projects-hero-bg"></div>
+  <div class="projects-hero-content reveal">
+    <div class="hero-badge">
+      <span class="badge-dot"></span> 持续更新中
+    </div>
+    <h1>项目<span class="gradient-text">作品集</span></h1>
+    <p>从 AI Agent 到数据分析，每个项目都是一次探索与实践。<br>这里记录了我的学习轨迹和技术积累。</p>
+  </div>
+</section>
+
+<div class="stats-bar reveal">
+  <div class="stat-card">
+    <div class="stat-number">5+</div>
+    <div class="stat-label">项目仓库</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">100+</div>
+    <div class="stat-label">LLM Apps 研习</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">4</div>
+    <div class="stat-label">技术领域</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">∞</div>
+    <div class="stat-label">探索热情</div>
+  </div>
+</div>
+
+<div class="filter-bar reveal">
+  <button class="filter-btn active" data-filter="all">全部</button>
+  <button class="filter-btn" data-filter="agent">LLM · Agent</button>
+  <button class="filter-btn" data-filter="data">数据分析</button>
+  <button class="filter-btn" data-filter="education">学习实践</button>
+</div>
+
+<section class="portfolio-section">
+
+  <!-- Project 1: AI Agent 记忆系统 -->
+  <div class="portfolio-card reveal" data-category="agent">
+    <div class="portfolio-visual vis-agent"></div>
+    <div class="portfolio-detail">
+      <div class="portfolio-meta">
+        <span class="portfolio-status active">进行中</span>
+        <span class="portfolio-category">LLM · Agent</span>
+      </div>
+      <h3>AI Agent 记忆系统</h3>
+      <p>基于持久化存储的 AI Agent 记忆模块，支持上下文跨会话保留与智能检索，让 AI 对话更连贯、更个性化。</p>
+      <ul class="portfolio-highlights">
+        <li>支持短期与长期记忆的分层管理</li>
+        <li>基于向量数据库的语义检索</li>
+        <li>记忆衰减与重要性评分机制</li>
+        <li>跨会话上下文持久化</li>
+      </ul>
+      <div class="portfolio-tech">
+        <span>Python</span><span>LLM</span><span>Vector DB</span><span>Embedding</span>
+      </div>
+      <div class="portfolio-links">
+        <a href="https://github.com/hanyushuai-tech/agentmemory" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 2: Awesome LLM Apps -->
+  <div class="portfolio-card reveal" data-category="agent">
+    <div class="portfolio-visual vis-rag"></div>
+    <div class="portfolio-detail">
+      <div class="portfolio-meta">
+        <span class="portfolio-status learning">持续学习</span>
+        <span class="portfolio-category">RAG · Agent · Full-Stack</span>
+      </div>
+      <h3>Awesome LLM Apps</h3>
+      <p>100+ AI Agent & RAG 应用合集，覆盖检索增强生成、多模态交互等前沿场景，可直接克隆运行与二次开发。</p>
+      <ul class="portfolio-highlights">
+        <li>涵盖 RAG、Agent、多模态等多种应用场景</li>
+        <li>每个应用可独立运行，降低学习门槛</li>
+        <li>持续更新，跟踪 LLM 应用最新趋势</li>
+        <li>适合快速原型开发与技术验证</li>
+      </ul>
+      <div class="portfolio-tech">
+        <span>RAG</span><span>Agent</span><span>Open Source</span><span>LangChain</span>
+      </div>
+      <div class="portfolio-links">
+        <a href="https://github.com/hanyushuai-tech/awesome-llm-apps" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 3: 房地产市场数据分析 -->
+  <div class="portfolio-card reveal" data-category="data">
+    <div class="portfolio-visual vis-data"></div>
+    <div class="portfolio-detail">
+      <div class="portfolio-meta">
+        <span class="portfolio-status completed">已完成</span>
+        <span class="portfolio-category">Data Analysis</span>
+      </div>
+      <h3>房地产市场数据分析</h3>
+      <p>基于 Pandas、Matplotlib、Seaborn 的房地产市场数据探索与可视化分析，挖掘价格趋势与影响因素。</p>
+      <ul class="portfolio-highlights">
+        <li>数据清洗与预处理流程标准化</li>
+        <li>多维度可视化分析（价格趋势、区域对比、相关性矩阵）</li>
+        <li>统计建模与特征工程实践</li>
+        <li>完整的 Jupyter Notebook 分析报告</li>
+      </ul>
+      <div class="portfolio-tech">
+        <span>Pandas</span><span>Matplotlib</span><span>Seaborn</span><span>Jupyter</span>
+      </div>
+      <div class="portfolio-links">
+        <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project 4: 动手学大模型 -->
+  <div class="portfolio-card reveal" data-category="education">
+    <div class="portfolio-visual vis-llm"></div>
+    <div class="portfolio-detail">
+      <div class="portfolio-meta">
+        <span class="portfolio-status learning">学习中</span>
+        <span class="portfolio-category">Education · LLM</span>
+      </div>
+      <h3>动手学大模型（Dive into LLMs）</h3>
+      <p>《Dive into LLMs》系列教程实践，深入理解大语言模型原理，涵盖推理、微调、部署等核心环节。</p>
+      <ul class="portfolio-highlights">
+        <li>从零理解 Transformer 架构与注意力机制</li>
+        <li>动手实现 LLM 推理与文本生成</li>
+        <li>微调实践：LoRA、QLoRA 等高效微调方法</li>
+        <li>模型部署与 API 服务开发</li>
+      </ul>
+      <div class="portfolio-tech">
+        <span>LLM</span><span>PyTorch</span><span>Transformers</span><span>Education</span>
+      </div>
+      <div class="portfolio-links">
+        <a href="https://github.com/hanyushuai-tech/dive-into-llms" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="contact reveal" id="contact">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <h2>对某个项目<span class="gradient-text">感兴趣</span>？</h2>
+    <p>欢迎交流想法、提出建议，或一起合作开发。</p>
+    <div class="contact-links">
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener" class="contact-link-item">
+        <span class="contact-icon">&#9906;</span>
+        <span>GitHub</span>
+        <small>hanyushuai-tech</small>
+      </a>
+      <a href="mailto:kings.land.no1@gmail.com" class="contact-link-item">
+        <span class="contact-icon">&#9993;</span>
+        <span>邮箱</span>
+        <small>kings.land.no1@gmail.com</small>
+      </a>
+      <a href="https://breakclouds.com" class="contact-link-item">
+        <span class="contact-icon">&#127758;</span>
+        <span>主页</span>
+        <small>breakclouds.com</small>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="logo" style="margin-bottom:8px;display:inline-block;">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <path d="M4 24L12 8L18 18L24 4L28 16" stroke="url(#logo-grad2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs><linearGradient id="logo-grad2" x1="0" y1="32" x2="32" y2="0"><stop stop-color="#a855f7"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+      </svg>
+      Break Clouds
+    </a>
+    <p>AI · Data Science · Tech Enthusiast</p>
+    <div class="footer-social">
+      <a href="https://github.com/hanyushuai-tech" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:kings.land.no1@gmail.com">Email</a>
+      <a href="index.html">主页</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Break Clouds</p>
+  </div>
+</footer>
+
+<button class="scroll-top" id="scrollTop" aria-label="返回顶部">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+(function() {
+  // ── Hamburger Menu ──────────────────────────────
+  var hamburger = document.getElementById('hamburger');
+  var overlay = document.getElementById('mobileOverlay');
+  var body = document.body;
+  var overlayLinks = overlay.querySelectorAll('.mobile-nav-link, .mobile-cta');
+
+  function openMenu() {
+    overlay.classList.add('active');
+    hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    overlay.classList.remove('active');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', function() {
+    if (overlay.classList.contains('active')) { closeMenu(); } else { openMenu(); }
+  });
+  overlayLinks.forEach(function(link) {
+    link.addEventListener('click', closeMenu);
+  });
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeMenu();
+  });
+
+  // ── Scroll-to-Top Button ────────────────────────
+  var scrollBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 500) {
+      scrollBtn.classList.add('visible');
+    } else {
+      scrollBtn.classList.remove('visible');
+    }
+  });
+  scrollBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── Scroll Reveal ───────────────────────────────
+  var revealEls = document.querySelectorAll('.reveal');
+  var observer;
+  if ('IntersectionObserver' in window) {
+    observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el) { observer.observe(el); });
+  } else {
+    revealEls.forEach(function(el) { el.classList.add('revealed'); }
+    );
+  }
+
+  // ── Filter Tabs ─────────────────────────────────
+  var filterBtns = document.querySelectorAll('.filter-btn');
+  var cards = document.querySelectorAll('.portfolio-card');
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var filter = btn.getAttribute('data-filter');
+
+      cards.forEach(function(card) {
+        var cat = card.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          card.style.display = '';
+          // Re-trigger reveal animation
+          card.classList.remove('revealed');
+          requestAnimationFrame(function() {
+            card.classList.add('revealed');
+          });
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
