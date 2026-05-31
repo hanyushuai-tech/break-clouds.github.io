@@ -1,5 +1,35 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ===== Copernicus Font ===== */
+@font-face {
+  font-family: 'Copernicus';
+  src: url('fonts/Copernicus-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Copernicus';
+  src: url('fonts/Copernicus-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Copernicus';
+  src: url('fonts/Copernicus-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Copernicus';
+  src: url('fonts/Copernicus-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #09090b;
   --bg-card: #131318;
