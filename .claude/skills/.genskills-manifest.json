@@ -1,0 +1,55 @@
+{
+  "packageVersion": "1.4.2",
+  "installedAt": "2026-05-18T16:36:56.906Z",
+  "skills": {
+    "genskills--security-audit": {
+      "version": "1.4.2",
+      "category": "code-quality",
+      "checksum": "a5f8bcff0190b6b1",
+      "installedAt": "2026-05-18T16:36:25.966Z",
+      "source": "genskills"
+    },
+    "genskills--accessibility-audit": {
+      "version": "1.4.2",
+      "category": "code-quality",
+      "checksum": "7e708b9d7b1aaca7",
+      "installedAt": "2026-05-18T16:36:51.714Z",
+      "source": "genskills"
+    },
+    "genskills--dead-code": {
+      "version": "1.4.2",
+      "category": "code-quality",
+      "checksum": "ed6c774f02d13133",
+      "installedAt": "2026-05-18T16:36:52.779Z",
+      "source": "genskills"
+    },
+    "genskills--perf-optimize": {
+      "version": "1.4.2",
+      "category": "development",
+      "checksum": "87ec1eb0141016b0",
+      "installedAt": "2026-05-18T16:36:53.930Z",
+      "source": "genskills"
+    },
+    "genskills--dependency-audit": {
+      "version": "1.4.2",
+      "category": "code-quality",
+      "checksum": "4fcd77ffbf2b490e",
+      "installedAt": "2026-05-18T16:36:54.926Z",
+      "source": "genskills"
+    },
+    "genskills--pr-create": {
+      "version": "1.4.2",
+      "category": "workflow",
+      "checksum": "340be11913c4204a",
+      "installedAt": "2026-05-18T16:36:55.936Z",
+      "source": "genskills"
+    },
+    "genskills--ci-fix": {
+      "version": "1.4.2",
+      "category": "workflow",
+      "checksum": "1214fc7fd8a836a6",
+      "installedAt": "2026-05-18T16:36:56.905Z",
+      "source": "genskills"
+    }
+  }
+}
