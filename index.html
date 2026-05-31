@@ -135,6 +135,623 @@
   </div>
 </section>
 
+<!-- ===== Knowledge Graph Tree ===== -->
+<style>
+.kg-section {
+  padding: 80px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.kg-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 40% at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.kg-header { text-align: center; margin-bottom: 48px; position: relative; z-index: 1; }
+.kg-header h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -1px; margin-bottom: 8px; }
+.kg-header p { color: var(--text-dim); font-size: 15px; }
+
+.kg-tree {
+  max-width: 900px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+/* Root node */
+.kg-root {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 8px;
+}
+.kg-root-node {
+  background: var(--gradient-1); border: none; border-radius: 12px;
+  padding: 16px 32px; text-align: center;
+  box-shadow: 0 0 30px rgba(168,85,247,0.3);
+  cursor: default;
+}
+.kg-root-node h3 { font-size: 18px; font-weight: 700; color: #fff; margin: 0 0 4px; }
+.kg-root-node span { font-size: 12px; color: rgba(255,255,255,0.7); }
+
+/* Vertical connector from root */
+.kg-trunk {
+  width: 2px; height: 32px;
+  background: linear-gradient(to bottom, var(--purple), rgba(168,85,247,0.3));
+  margin: 0 auto;
+}
+
+/* Horizontal bar connecting phases */
+.kg-hbar {
+  height: 2px; background: rgba(168,85,247,0.25);
+  margin: 0 auto; position: relative;
+}
+
+/* Phase level */
+.kg-phases {
+  display: flex; flex-direction: column; gap: 0;
+  position: relative;
+}
+
+.kg-phase { position: relative; }
+
+/* Vertical line on left */
+.kg-phase::before {
+  content: ''; position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px; background: rgba(168,85,247,0.15);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.kg-phase:last-child::before { display: none; }
+
+/* Phase header (clickable) */
+.kg-phase-header {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 24px;
+  cursor: pointer; transition: all 0.3s;
+  position: relative; z-index: 1;
+  margin: 0 auto;
+  max-width: 560px; width: 100%;
+}
+.kg-phase-header:hover { border-color: var(--pc, var(--purple)); }
+.kg-phase-header.open { border-color: var(--pc, var(--purple)); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+.kg-phase-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; font-weight: 700;
+  color: #fff; flex-shrink: 0;
+}
+.kg-phase-info { flex: 1; }
+.kg-phase-info h4 { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+.kg-phase-info small { font-size: 12px; color: var(--text-muted); }
+.kg-phase-arrow {
+  font-size: 18px; color: var(--text-muted); transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.kg-phase-header.open .kg-phase-arrow { transform: rotate(90deg); }
+
+/* Phase colors */
+.kg-phase[data-p="1"] { --pc: #c9a84c; }
+.kg-phase[data-p="2"] { --pc: #7eb8c9; }
+.kg-phase[data-p="3"] { --pc: #9b7ec9; }
+.kg-phase[data-p="4"] { --pc: #c97e7e; }
+.kg-phase[data-p="5"] { --pc: #7ec99b; }
+.kg-phase[data-p="6"] { --pc: #a855f7; }
+
+/* Subjects panel */
+.kg-subjects {
+  max-width: 560px; margin: 0 auto;
+  background: var(--bg-card); border: 1px solid var(--pc, var(--border));
+  border-top: none; border-radius: 0 0 12px 12px;
+  overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s;
+  max-height: 0; opacity: 0;
+}
+.kg-subjects.open { max-height: 2000px; opacity: 1; }
+
+.kg-subject {
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer; transition: background 0.2s;
+}
+.kg-subject:last-child { border-bottom: none; }
+.kg-subject:hover { background: rgba(255,255,255,0.02); }
+
+.kg-subject-top {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.kg-subject-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.kg-subject-name::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--pc); flex-shrink: 0;
+}
+.kg-subject-weeks {
+  font-family: 'SF Mono','Fira Code',monospace;
+  font-size: 11px; color: var(--text-muted); flex-shrink: 0;
+}
+
+/* Topic tags */
+.kg-topics {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.3s, opacity 0.3s, margin-top 0.3s, padding-top 0.3s;
+}
+.kg-topics.open { max-height: 500px; opacity: 1; margin-top: 10px; padding-top: 10px; }
+
+.kg-tag {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px;
+  font-weight: 500; white-space: nowrap;
+  background: rgba(168,85,247,0.06); color: var(--text-dim);
+  border: 1px solid rgba(168,85,247,0.12);
+}
+
+/* Connector lines between levels */
+.kg-connector {
+  display: flex; justify-content: center;
+  height: 24px; position: relative;
+}
+.kg-connector::after {
+  content: ''; position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--pc, var(--purple)), transparent);
+  transform: translateX(-50%);
+}
+
+/* Entrance animation */
+.kg-phase {
+  opacity: 0; transform: translateY(20px);
+  animation: kg-fadeIn 0.5s ease forwards;
+}
+.kg-phase:nth-child(1) { animation-delay: 0.1s; }
+.kg-phase:nth-child(2) { animation-delay: 0.2s; }
+.kg-phase:nth-child(3) { animation-delay: 0.3s; }
+.kg-phase:nth-child(4) { animation-delay: 0.4s; }
+.kg-phase:nth-child(5) { animation-delay: 0.5s; }
+.kg-phase:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes kg-fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .kg-phase-header { padding: 12px 16px; gap: 12px; }
+  .kg-phase-dot { width: 30px; height: 30px; font-size: 11px; }
+  .kg-phase-info h4 { font-size: 14px; }
+  .kg-subject { padding: 12px 16px; }
+  .kg-subject-name { font-size: 13px; }
+  .kg-tag { font-size: 10px; padding: 1px 6px; }
+}
+</style>
+
+<section class="kg-section">
+  <div class="kg-header reveal">
+    <h2>知识<span class="gradient-text">图谱</span></h2>
+    <p>从数学基础到研究生量子力学 — 系统化学习路径</p>
+  </div>
+
+  <div class="kg-tree">
+    <div class="kg-root reveal">
+      <div class="kg-root-node">
+        <h3>Quantum Mechanics</h3>
+        <span>6 Phases · 18 Subjects · ~22 Months</span>
+      </div>
+      <div class="kg-trunk"></div>
+    </div>
+
+    <div class="kg-phases">
+
+      <!-- Phase 1 -->
+      <div class="kg-phase" data-p="1">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#c9a84c;">1</div>
+          <div class="kg-phase-info">
+            <h4>Mathematical Foundations</h4>
+            <small>~3 months · 微积分 · 线性代数 · 常微分方程</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Calculus (Single & Multivariable)</span>
+              <span class="kg-subject-weeks">5–6 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">limits & continuity</span>
+              <span class="kg-tag">integration techniques</span>
+              <span class="kg-tag">partial derivatives</span>
+              <span class="kg-tag">gradient & divergence</span>
+              <span class="kg-tag">vector calculus</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Linear Algebra</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">vector spaces</span>
+              <span class="kg-tag">matrices & determinants</span>
+              <span class="kg-tag">eigenvalues & eigenvectors</span>
+              <span class="kg-tag">inner products</span>
+              <span class="kg-tag">diagonalization</span>
+              <span class="kg-tag">Hermitian matrices</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Ordinary Differential Equations</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">first-order ODEs</span>
+              <span class="kg-tag">second-order linear ODEs</span>
+              <span class="kg-tag">separation of variables</span>
+              <span class="kg-tag">series solutions</span>
+              <span class="kg-tag">Sturm–Liouville theory</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="kg-phase" data-p="2">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#7eb8c9;">2</div>
+          <div class="kg-phase-info">
+            <h4>Classical Physics</h4>
+            <small>~3.5 months · 经典力学 · 波与振荡 · 电磁学</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Classical Mechanics</span>
+              <span class="kg-subject-weeks">5–6 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">Newton's laws</span>
+              <span class="kg-tag">conservation laws</span>
+              <span class="kg-tag">Lagrangian mechanics</span>
+              <span class="kg-tag">Hamiltonian mechanics</span>
+              <span class="kg-tag">phase space</span>
+              <span class="kg-tag">central force problems</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Waves & Oscillations</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">simple harmonic motion</span>
+              <span class="kg-tag">wave equation</span>
+              <span class="kg-tag">superposition & interference</span>
+              <span class="kg-tag">Fourier analysis intro</span>
+              <span class="kg-tag">standing waves</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Electromagnetism</span>
+              <span class="kg-subject-weeks">5–6 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">Coulomb & Gauss laws</span>
+              <span class="kg-tag">Maxwell's equations</span>
+              <span class="kg-tag">electromagnetic waves</span>
+              <span class="kg-tag">vector potential</span>
+              <span class="kg-tag">gauge transformations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="kg-phase" data-p="3">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#9b7ec9;">3</div>
+          <div class="kg-phase-info">
+            <h4>Advanced Mathematics</h4>
+            <small>~4 months · 复变函数 · PDE · 数学方法 · 概率统计</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Complex Analysis</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">analytic functions</span>
+              <span class="kg-tag">Cauchy's theorem</span>
+              <span class="kg-tag">residue theorem</span>
+              <span class="kg-tag">contour integration</span>
+              <span class="kg-tag">branch cuts</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Partial Differential Equations</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">heat & wave equations</span>
+              <span class="kg-tag">Fourier series</span>
+              <span class="kg-tag">Fourier transforms</span>
+              <span class="kg-tag">spherical coordinates</span>
+              <span class="kg-tag">Legendre polynomials</span>
+              <span class="kg-tag">spherical harmonics</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Mathematical Methods for Physics</span>
+              <span class="kg-subject-weeks">5–6 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">special functions</span>
+              <span class="kg-tag">Hermite polynomials</span>
+              <span class="kg-tag">Laguerre polynomials</span>
+              <span class="kg-tag">Green's functions</span>
+              <span class="kg-tag">tensor analysis</span>
+              <span class="kg-tag">variational calculus</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Probability & Statistics</span>
+              <span class="kg-subject-weeks">2–3 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">probability distributions</span>
+              <span class="kg-tag">expectation values</span>
+              <span class="kg-tag">Gaussian distribution</span>
+              <span class="kg-tag">uncertainty & variance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="kg-phase" data-p="4">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#c97e7e;">4</div>
+          <div class="kg-phase-info">
+            <h4>Introductory Quantum Mechanics</h4>
+            <small>~4 months · 波动力学 · 希尔伯特空间 · 氢原子 · 自旋</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Foundations & Wave Mechanics</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">Born rule</span>
+              <span class="kg-tag">infinite square well</span>
+              <span class="kg-tag">harmonic oscillator</span>
+              <span class="kg-tag">free particle & wave packets</span>
+              <span class="kg-tag">uncertainty principle</span>
+              <span class="kg-tag">Dirac notation intro</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Formalism: Hilbert Space & Operators</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">Hermitian operators</span>
+              <span class="kg-tag">commutators</span>
+              <span class="kg-tag">generalized uncertainty</span>
+              <span class="kg-tag">Dirac notation</span>
+              <span class="kg-tag">position & momentum representations</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">3D QM & the Hydrogen Atom</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">3D Schrödinger eq.</span>
+              <span class="kg-tag">angular momentum operators</span>
+              <span class="kg-tag">spherical harmonics</span>
+              <span class="kg-tag">radial equation</span>
+              <span class="kg-tag">hydrogen energy levels</span>
+              <span class="kg-tag">quantum numbers n, l, m</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Spin & Identical Particles</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">spin-1/2</span>
+              <span class="kg-tag">Pauli matrices</span>
+              <span class="kg-tag">spinors</span>
+              <span class="kg-tag">addition of angular momentum</span>
+              <span class="kg-tag">Clebsch–Gordan coefficients</span>
+              <span class="kg-tag">fermions vs bosons</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 5 -->
+      <div class="kg-phase" data-p="5">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#7ec99b;">5</div>
+          <div class="kg-phase-info">
+            <h4>Intermediate Quantum Mechanics</h4>
+            <small>~4 months · 微扰论 · 含时QM · 散射 · 密度矩阵</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Perturbation Theory</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">non-degenerate perturbation</span>
+              <span class="kg-tag">degenerate perturbation</span>
+              <span class="kg-tag">fine structure of hydrogen</span>
+              <span class="kg-tag">Zeeman effect</span>
+              <span class="kg-tag">variational method</span>
+              <span class="kg-tag">WKB approximation</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Time-Dependent QM & Transitions</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">time-dependent perturbation</span>
+              <span class="kg-tag">Fermi's golden rule</span>
+              <span class="kg-tag">selection rules</span>
+              <span class="kg-tag">spontaneous emission</span>
+              <span class="kg-tag">adiabatic theorem</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Scattering Theory</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">cross sections</span>
+              <span class="kg-tag">Born approximation</span>
+              <span class="kg-tag">partial wave analysis</span>
+              <span class="kg-tag">phase shifts</span>
+              <span class="kg-tag">optical theorem</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Density Matrices & Mixed States</span>
+              <span class="kg-subject-weeks">2–3 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">density operator</span>
+              <span class="kg-tag">pure vs mixed states</span>
+              <span class="kg-tag">partial trace</span>
+              <span class="kg-tag">decoherence</span>
+              <span class="kg-tag">quantum entanglement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 6 -->
+      <div class="kg-phase" data-p="6">
+        <div class="kg-phase-header" onclick="togglePhase(this)">
+          <div class="kg-phase-dot" style="background:#a855f7;">6</div>
+          <div class="kg-phase-info">
+            <h4>Graduate Quantum Mechanics</h4>
+            <small>~4 months · Sakurai · 对称性 · 路径积分 · 多体QM</small>
+          </div>
+          <div class="kg-phase-arrow">›</div>
+        </div>
+        <div class="kg-subjects">
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Sakurai: Fundamental Concepts</span>
+              <span class="kg-subject-weeks">5–6 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">bra-ket formalism</span>
+              <span class="kg-tag">Schrödinger picture</span>
+              <span class="kg-tag">Heisenberg picture</span>
+              <span class="kg-tag">interaction picture</span>
+              <span class="kg-tag">propagators</span>
+              <span class="kg-tag">coherent states</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Symmetries in Quantum Mechanics</span>
+              <span class="kg-subject-weeks">4–5 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">rotational symmetry</span>
+              <span class="kg-tag">SU(2) & SO(3)</span>
+              <span class="kg-tag">parity & time reversal</span>
+              <span class="kg-tag">Noether's theorem</span>
+              <span class="kg-tag">Wigner's theorem</span>
+              <span class="kg-tag">irreducible representations</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Path Integral Formulation</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">sum over histories</span>
+              <span class="kg-tag">Feynman path integral</span>
+              <span class="kg-tag">stationary phase approximation</span>
+              <span class="kg-tag">Euclidean path integral</span>
+              <span class="kg-tag">connection to QFT action</span>
+            </div>
+          </div>
+          <div class="kg-subject" onclick="toggleTopics(this)">
+            <div class="kg-subject-top">
+              <span class="kg-subject-name">Identical Particles & Many-Body QM</span>
+              <span class="kg-subject-weeks">3–4 wks</span>
+            </div>
+            <div class="kg-topics">
+              <span class="kg-tag">second quantization</span>
+              <span class="kg-tag">creation & annihilation operators</span>
+              <span class="kg-tag">Fock space</span>
+              <span class="kg-tag">Hartree–Fock method</span>
+              <span class="kg-tag">Bose–Einstein & Fermi–Dirac</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function togglePhase(header) {
+  var subjects = header.nextElementSibling;
+  var isOpen = header.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.kg-phase-header.open').forEach(function(h) {
+    h.classList.remove('open');
+    h.nextElementSibling.classList.remove('open');
+  });
+  // Toggle clicked
+  if (!isOpen) {
+    header.classList.add('open');
+    subjects.classList.add('open');
+  }
+}
+
+function toggleTopics(subject) {
+  var topics = subject.querySelector('.kg-topics');
+  if (topics) topics.classList.toggle('open');
+}
+</script>
+
 <section class="about reveal" id="about">
   <h2 class="section-title">关于<span class="gradient-text">我</span></h2>
   <div class="about-grid">
