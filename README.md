@@ -22,7 +22,7 @@ break-clouds.github.io/
 |------|------|--------|
 | `Break Clouds` | 导航栏、Hero、关于我 | 替换为你的真实姓名 |
 | `AI 开发者 / 数据科学家 / 学生 / 技术爱好者` | Hero 描述 | 改为你的身份定位 |
-| `kings.land.no1@gmail.com` | 关于我、联系我 | 已在网站上，可替换为其他邮箱 |
+| `admin.breakclouds@gmail.com` | 关于我、联系我 | 已在网站上，可替换为其他邮箱 |
 
 ---
 
