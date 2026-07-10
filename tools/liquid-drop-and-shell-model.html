@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquid Drop &amp; Shell Model — Break Clouds</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #080d18;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+  .tool-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid #1b2540;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .tool-header a {
+    color: #93a1bd; text-decoration: none; font-size: 13px;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    transition: color .15s;
+  }
+  .tool-header a:hover { color: #f2b134; }
+  .tool-header .title {
+    color: #e9eefb; font-size: 15px; font-weight: 700;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .tool-main {
+    flex: 1; padding: 24px 16px 40px;
+  }
+</style>
+</head>
+<body>
+<header class="tool-header">
+  <span class="title">🔬 Nuclear Models — Liquid Drop &amp; Shell Model</span>
+  <a href="https://breakclouds.com/">← Back to Break Clouds</a>
+</header>
+<main class="tool-main">
+
+<div class="nm-root">
+<div class="nm-card">
+
+<div class="nm-tabs">
+  <button class="nm-tab active" data-tab="ldm">Liquid Drop Model</button>
+  <button class="nm-tab" data-tab="shell">Shell Model</button>
+</div>
+
+<!-- ===================== LIQUID DROP MODEL TAB ===================== -->
+<div class="nm-panel-wrap active" id="tab-ldm">
+  <p class="nm-intro">Treat the nucleus like a drop of incompressible liquid. Binding energy = (nucleons that like their neighbors) &minus; (surface nucleons with fewer neighbors) &minus; (proton&ndash;proton repulsion) &minus; (penalty for N&ne;Z) &plusmn; (pairing bonus).</p>
+
+  <div class="nm-grid">
+    <div class="nm-box">
+      <h3>Nucleus schematic</h3>
+      <svg id="nucleusSvg" viewBox="0 0 260 260"></svg>
+      <div class="nm-legend">
+        <span><i class="nm-dot" style="background:var(--proton)"></i>Protons (Z)</span>
+        <span><i class="nm-dot" style="background:var(--neutron)"></i>Neutrons (N)</span>
+      </div>
+
+      <div class="nm-controls">
+        <label>Mass number A &nbsp;<b id="aVal">56</b></label>
+        <input type="range" id="aSlider" min="4" max="260" value="56" step="1">
+        <label>Protons Z &nbsp;<b id="zVal">26</b> <span id="zNote" class="nm-muted"></span></label>
+        <input type="range" id="zSlider" min="1" max="55" value="26" step="1">
+      </div>
+
+      <div class="nm-readout">
+        <div><span class="nm-muted">Neutrons N</span><b id="nVal">30</b></div>
+        <div><span class="nm-muted">Total binding energy</span><b id="totalVal">495.4 MeV</b></div>
+        <div><span class="nm-muted">Binding energy / nucleon</span><b id="perNucVal">8.85 MeV</b></div>
+      </div>
+    </div>
+
+    <div class="nm-box">
+      <h3>Binding energy / nucleon vs. A</h3>
+      <svg id="curveSvg" viewBox="0 0 620 220"></svg>
+      <h3>Per-nucleon term contributions (MeV)</h3>
+      <svg id="barsSvg" viewBox="0 0 620 220"></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SHELL MODEL TAB ===================== -->
+<div class="nm-panel-wrap" id="tab-shell">
+  <p class="nm-intro">Nucleons fill quantized energy levels, like electrons in atoms. Levels cluster into shells separated by energy gaps &mdash; a shell that is exactly full (a <b>magic number</b>) is extra stable. Slider = protons OR neutrons (each type fills its own set of levels independently).</p>
+
+  <div class="nm-grid nm-shellgrid">
+    <div class="nm-box">
+      <label>Nucleon count &nbsp;<b id="nShellVal">8</b></label>
+      <input type="range" id="nShellSlider" min="0" max="126" value="8" step="1">
+      <div id="magicMsg" class="nm-magic-msg"></div>
+      <div class="nm-chips" id="magicChips"></div>
+      <div class="nm-legend" style="margin-top:10px">
+        <span><i class="nm-dot" style="background:var(--gold)"></i>Filled slot</span>
+        <span><i class="nm-dot nm-dot-outline"></i>Empty slot</span>
+      </div>
+    </div>
+    <div class="nm-box nm-shellsvgbox">
+      <svg id="shellSvg" viewBox="0 0 460 620"></svg>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<style>
+.nm-root{ background:transparent; }
+.nm-card{
+  --bg:#0b1220; --panel:#121b30; --panel2:#0e1526; --text:#e9eefb; --muted:#93a1bd;
+  --gold:#f2b134; --proton:#ef5a56; --neutron:#4fa8f0; --green:#4fbf8b; --border:#25314e;
+  background:var(--bg); color:var(--text); border-radius:16px; padding:20px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  max-width:980px; margin:0 auto; box-sizing:border-box;
+}
+.nm-card *{ box-sizing:border-box; }
+.nm-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+.nm-tab{
+  background:var(--panel2); color:var(--muted); border:1px solid var(--border); padding:9px 16px;
+  border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s ease;
+}
+.nm-tab:hover{ color:var(--text); }
+.nm-tab.active{ background:var(--gold); color:#1a1300; border-color:var(--gold); }
+.nm-panel-wrap{ display:none; }
+.nm-panel-wrap.active{ display:block; }
+.nm-intro{ color:var(--muted); font-size:13px; line-height:1.5; margin:0 0 16px 0; }
+.nm-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:16px; }
+.nm-shellgrid{ grid-template-columns:0.85fr 1.15fr; }
+@media (max-width:700px){ .nm-grid, .nm-shellgrid{ grid-template-columns:1fr; } }
+.nm-box{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px; }
+.nm-box h3{ margin:0 0 8px 0; font-size:13px; font-weight:600; color:var(--text); }
+.nm-box h3:not(:first-child){ margin-top:16px; }
+.nm-legend{ display:flex; gap:16px; font-size:12px; color:var(--muted); margin:8px 0; }
+.nm-legend span{ display:flex; align-items:center; gap:6px; }
+.nm-dot{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+.nm-dot-outline{ background:transparent; border:1.5px solid var(--muted); }
+.nm-controls{ margin-top:12px; }
+.nm-controls label{ display:block; font-size:12px; color:var(--muted); margin:10px 0 4px; }
+.nm-controls input[type=range]{ width:100%; accent-color:var(--gold); }
+.nm-muted{ color:var(--muted); font-weight:400; }
+.nm-readout{ margin-top:14px; display:flex; flex-direction:column; gap:6px; border-top:1px solid var(--border); padding-top:10px; }
+.nm-readout div{ display:flex; justify-content:space-between; font-size:12.5px; }
+.nm-readout b{ color:var(--gold); font-size:13px; }
+#tab-shell label{ display:block; font-size:12px; color:var(--muted); margin-bottom:6px; }
+#tab-shell input[type=range]{ width:100%; accent-color:var(--gold); }
+.nm-magic-msg{ margin-top:14px; padding:10px 12px; border-radius:10px; background:var(--panel2); border:1px solid var(--border); font-size:12.5px; line-height:1.5; min-height:20px; }
+.nm-magic-msg.hit{ background:rgba(242,177,52,0.12); border-color:var(--gold); color:var(--gold); font-weight:600; }
+.nm-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.nm-chip{ font-size:11px; padding:4px 9px; border-radius:999px; border:1px solid var(--border); color:var(--muted); }
+.nm-chip.closed{ border-color:var(--green); color:var(--green); }
+.nm-chip.hit{ border-color:var(--gold); background:rgba(242,177,52,0.15); color:var(--gold); font-weight:700; }
+.nm-shellsvgbox{ overflow-x:auto; }
+svg text{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+</style>
+
+<script>
+(function(){
+  const root = document.currentScript.previousElementSibling.tagName === 'STYLE' ? document.currentScript.parentElement : document;
+
+  // ---------- Tabs ----------
+  const tabs = document.querySelectorAll('.nm-tab');
+  tabs.forEach(t=>{
+    t.addEventListener('click', ()=>{
+      document.querySelectorAll('.nm-tab').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.nm-panel-wrap').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---------- Physics: Liquid Drop Model (SEMF) ----------
+  const aV=15.75, aS=17.8, aC=0.711, aA=23.7, aP=11.18;
+  function ldmTerms(A,Z){
+    const N=A-Z;
+    const volume = aV*A;
+    const surface = -aS*Math.pow(A,2/3);
+    const coulomb = -aC*Z*(Z-1)/Math.pow(A,1/3);
+    const asymmetry = -aA*Math.pow(A-2*Z,2)/A;
+    const evenZ = Z%2===0, evenN = N%2===0;
+    let pairing;
+    if(evenZ && evenN) pairing = aP/Math.sqrt(A);
+    else if(!evenZ && !evenN) pairing = -aP/Math.sqrt(A);
+    else pairing = 0;
+    const total = volume+surface+coulomb+asymmetry+pairing;
+    return {volume,surface,coulomb,asymmetry,pairing,total,perNucleon:total/A,N};
+  }
+  function zStable(A){
+    const z = A/(2+0.015*Math.pow(A,2/3));
+    return Math.max(1, Math.min(A-1, Math.round(z)));
+  }
+
+  // precompute stability curve once
+  const curvePts = [];
+  for(let A=4; A<=260; A++){
+    const Z = zStable(A);
+    curvePts.push({A, v: ldmTerms(A,Z).perNucleon});
+  }
+
+  // fixed random points inside unit disk for nucleus schematic (stable across re-renders)
+  const NUM_PTS = 140;
+  const fixedPts = [];
+  (function(){
+    let seed = 42;
+    function rnd(){ seed = (seed*1103515245+12345)%2147483648; return seed/2147483648; }
+    for(let i=0;i<NUM_PTS;i++){
+      const ang = rnd()*Math.PI*2;
+      const rad = Math.sqrt(rnd());
+      fixedPts.push({x:Math.cos(ang)*rad, y:Math.sin(ang)*rad});
+    }
+  })();
+  function seededShuffle(arr, seed){
+    const a = arr.slice();
+    let s = seed;
+    function rnd(){ s=(s*1103515245+12345)%2147483648; return s/2147483648; }
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(rnd()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  const aSlider = document.getElementById('aSlider');
+  const zSlider = document.getElementById('zSlider');
+  const aVal = document.getElementById('aVal');
+  const zVal = document.getElementById('zVal');
+  const nVal = document.getElementById('nVal');
+  const zNote = document.getElementById('zNote');
+  const totalVal = document.getElementById('totalVal');
+  const perNucVal = document.getElementById('perNucVal');
+  const nucleusSvg = document.getElementById('nucleusSvg');
+  const curveSvg = document.getElementById('curveSvg');
+  const barsSvg = document.getElementById('barsSvg');
+
+  function drawNucleus(A,Z){
+    const N = A-Z;
+    const count = Math.min(A, NUM_PTS);
+    const protonsShown = Math.max(0, Math.min(count, Math.round(count*Z/A)));
+    const neutronsShown = count - protonsShown;
+    let colors = new Array(protonsShown).fill('p').concat(new Array(neutronsShown).fill('n'));
+    colors = seededShuffle(colors, A*7+Z*13+1);
+    const r = Math.max(26, 15.6*Math.pow(A,1/3));
+    const cx=130, cy=130;
+    let s = '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r+6)+'" fill="none" stroke="#25314e" stroke-width="1.5" stroke-dasharray="3 3"/>';
+    for(let i=0;i<count;i++){
+      const p = fixedPts[i];
+      const x = cx + p.x*r;
+      const y = cy + p.y*r;
+      const col = colors[i]==='p' ? 'var(--proton)' : 'var(--neutron)';
+      s += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4.2" fill="'+col+'" opacity="0.92"/>';
+    }
+    if(A>NUM_PTS){
+      s += '<text x="'+cx+'" y="'+(cy+r+22)+'" text-anchor="middle" font-size="10" fill="var(--muted)">('+A+' nucleons total — sample shown)</text>';
+    }
+    nucleusSvg.innerHTML = s;
+  }
+
+  const CM = {l:44, r:14, t:12, b:26}, CW=620, CH=220;
+  const plotW = CW-CM.l-CM.r, plotH = CH-CM.t-CM.b;
+  const yDomain=[0,9.5];
+  function cx_(A){ return CM.l + (A-4)/(260-4)*plotW; }
+  function cy_(v){ return CM.t + (1-(v-yDomain[0])/(yDomain[1]-yDomain[0]))*plotH; }
+
+  function drawCurve(A,Z){
+    let path = 'M ' + curvePts.map(p=>cx_(p.A).toFixed(1)+','+cy_(p.v).toFixed(1)).join(' L ');
+    let s = '';
+    // gridlines
+    [0,2,4,6,8].forEach(v=>{
+      s += '<line x1="'+CM.l+'" x2="'+(CW-CM.r)+'" y1="'+cy_(v)+'" y2="'+cy_(v)+'" stroke="#1b2540" stroke-width="1"/>';
+      s += '<text x="'+(CM.l-8)+'" y="'+(cy_(v)+3)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+v+'</text>';
+    });
+    [50,100,150,200,250].forEach(a=>{
+      s += '<text x="'+cx_(a)+'" y="'+(CH-8)+'" text-anchor="middle" font-size="10" fill="var(--muted)">'+a+'</text>';
+    });
+    s += '<text x="'+(CW/2)+'" y="'+(CH-1)+'" text-anchor="middle" font-size="10" fill="var(--muted)"></text>';
+    s += '<path d="'+path+'" fill="none" stroke="var(--green)" stroke-width="2"/>';
+    // peak label near A=58
+    s += '<circle cx="'+cx_(58)+'" cy="'+cy_(8.86)+'" r="2.4" fill="var(--green)"/>';
+    s += '<text x="'+(cx_(58)+6)+'" y="'+(cy_(8.86)-6)+'" font-size="9.5" fill="var(--green)">Fe/Ni peak ~8.8 MeV</text>';
+
+    const t = ldmTerms(A,Z);
+    const stableV = curvePts[A-4].v;
+    if(Math.abs(t.perNucleon-stableV)>0.02){
+      s += '<line x1="'+cx_(A)+'" x2="'+cx_(A)+'" y1="'+cy_(stableV)+'" y2="'+cy_(t.perNucleon)+'" stroke="var(--gold)" stroke-width="1.2" stroke-dasharray="2 2"/>';
+    }
+    s += '<circle cx="'+cx_(A)+'" cy="'+cy_(Math.max(yDomain[0],Math.min(yDomain[1],t.perNucleon)))+'" r="4.5" fill="var(--gold)" stroke="#1a1300" stroke-width="1"/>';
+    curveSvg.innerHTML = s;
+  }
+
+  const BM = {l:96, r:16, t:8}, BW=620, BH=220;
+  const domainMin=-6, domainMax=17, range=domainMax-domainMin;
+  const bPlotW = BW-BM.l-BM.r;
+  function bx_(v){ return BM.l + (v-domainMin)/range*bPlotW; }
+
+  function drawBars(A,Z){
+    const t = ldmTerms(A,Z);
+    const terms = [
+      {label:'Volume  (+)', v:t.volume/A, c:'var(--green)'},
+      {label:'Surface  (−)', v:t.surface/A, c:'var(--proton)'},
+      {label:'Coulomb  (−)', v:t.coulomb/A, c:'var(--proton)'},
+      {label:'Asymmetry  (−)', v:t.asymmetry/A, c:'var(--proton)'},
+      {label:'Pairing  (±)', v:t.pairing/A, c:'var(--neutron)'},
+      {label:'Net B/A', v:t.perNucleon, c:'var(--gold)'}
+    ];
+    const rowH = 33;
+    const zeroX = bx_(0);
+    let s = '<line x1="'+zeroX+'" x2="'+zeroX+'" y1="0" y2="'+(rowH*terms.length+4)+'" stroke="#33405f" stroke-width="1"/>';
+    terms.forEach((term,i)=>{
+      const y = i*rowH + BM.t;
+      const bxv = bx_(term.v);
+      const x = Math.min(zeroX,bxv), w = Math.abs(bxv-zeroX);
+      const barH = i===terms.length-1 ? 16 : 13;
+      s += '<text x="8" y="'+(y+barH-1)+'" font-size="11" fill="var(--muted)">'+term.label+'</text>';
+      s += '<rect x="'+x.toFixed(1)+'" y="'+(y)+'" width="'+Math.max(w,1).toFixed(1)+'" height="'+barH+'" rx="2" fill="'+term.c+'" opacity="'+(i===terms.length-1?1:0.85)+'"/>';
+      const labelX = bxv + (term.v>=0? 6 : -6);
+      const anchor = term.v>=0 ? 'start' : 'end';
+      s += '<text x="'+labelX.toFixed(1)+'" y="'+(y+barH-2)+'" font-size="10.5" text-anchor="'+anchor+'" fill="var(--text)">'+term.v.toFixed(2)+'</text>';
+    });
+    barsSvg.setAttribute('viewBox','0 0 '+BW+' '+(rowH*terms.length+16));
+    barsSvg.innerHTML = s;
+  }
+
+  function updateLDM(){
+    let A = parseInt(aSlider.value,10);
+    let Z = parseInt(zSlider.value,10);
+    zSlider.max = A-1;
+    if(Z>A-1) Z = A-1;
+    if(Z<1) Z=1;
+    zSlider.value = Z;
+    const zs = zStable(A);
+    zNote.textContent = (Z===zs) ? '(most stable for this A)' : ('stable ≈ '+zs);
+    aVal.textContent = A; zVal.textContent = Z; nVal.textContent = A-Z;
+    const t = ldmTerms(A,Z);
+    totalVal.textContent = t.total.toFixed(1)+' MeV';
+    perNucVal.textContent = t.perNucleon.toFixed(2)+' MeV';
+    drawNucleus(A,Z);
+    drawCurve(A,Z);
+    drawBars(A,Z);
+  }
+  aSlider.addEventListener('input', ()=>{
+    const A = parseInt(aSlider.value,10);
+    zSlider.value = zStable(A);
+    updateLDM();
+  });
+  zSlider.addEventListener('input', updateLDM);
+  updateLDM();
+
+  // ---------- Shell Model ----------
+  const levels = [
+    {label:'1s₁⁄₂', deg:2, group:0},
+    {label:'1p₃⁄₂', deg:4, group:1},
+    {label:'1p₁⁄₂', deg:2, group:1},
+    {label:'1d₅⁄₂', deg:6, group:2},
+    {label:'2s₁⁄₂', deg:2, group:2},
+    {label:'1d₃⁄₂', deg:4, group:2},
+    {label:'1f₇⁄₂', deg:8, group:3},
+    {label:'2p₃⁄₂', deg:4, group:4},
+    {label:'1f₅⁄₂', deg:6, group:4},
+    {label:'2p₁⁄₂', deg:2, group:4},
+    {label:'1g₉⁄₂', deg:10, group:4},
+    {label:'1g₇⁄₂', deg:8, group:5},
+    {label:'2d₅⁄₂', deg:6, group:5},
+    {label:'2d₃⁄₂', deg:4, group:5},
+    {label:'3s₁⁄₂', deg:2, group:5},
+    {label:'1h₁₁⁄₂', deg:12, group:5},
+    {label:'1h₉⁄₂', deg:10, group:6},
+    {label:'2f₇⁄₂', deg:8, group:6},
+    {label:'2f₅⁄₂', deg:6, group:6},
+    {label:'3p₃⁄₂', deg:4, group:6},
+    {label:'3p₁⁄₂', deg:2, group:6},
+    {label:'1i₁₃⁄₂', deg:14, group:6}
+  ];
+  const magicNumbers = [2,8,20,28,50,82,126];
+
+  const rowH=22, groupGap=16, topPad=18;
+  let yOff=0, prevGroup=-1;
+  const rowY = [];
+  const boundaries = []; // {y, magic}
+  levels.forEach((lvl,i)=>{
+    if(prevGroup!==-1 && lvl.group!==prevGroup){
+      boundaries.push({yOff: yOff+groupGap/2, magic: magicNumbers[prevGroup]});
+      yOff += groupGap;
+    }
+    rowY[i] = yOff;
+    yOff += rowH;
+    prevGroup = lvl.group;
+  });
+  boundaries.push({yOff: yOff+4, magic: magicNumbers[6]}); // top boundary (126)
+  const totalH = yOff;
+  const svgH = totalH + topPad*2;
+  function ySvg(off){ return topPad + (totalH - off); }
+
+  const shellSvg = document.getElementById('shellSvg');
+  const nShellSlider = document.getElementById('nShellSlider');
+  const nShellVal = document.getElementById('nShellVal');
+  const magicMsg = document.getElementById('magicMsg');
+  const magicChips = document.getElementById('magicChips');
+
+  function drawShell(N){
+    let s='';
+    const dotR=6.2, dotGap=16.6, dotsX0=118;
+    // boundary lines
+    boundaries.forEach(b=>{
+      const y = ySvg(b.yOff);
+      s += '<line x1="6" x2="454" y1="'+y+'" y2="'+y+'" stroke="#33405f" stroke-width="1" stroke-dasharray="4 3"/>';
+      s += '<text x="454" y="'+(y-3)+'" text-anchor="end" font-size="10" fill="var(--gold)">magic '+b.magic+'</text>';
+    });
+    let running=0;
+    levels.forEach((lvl,i)=>{
+      const y = ySvg(rowY[i]) - rowH + 6;
+      const filled = Math.max(0, Math.min(lvl.deg, N-running));
+      running += lvl.deg;
+      s += '<text x="8" y="'+(y+9)+'" font-size="11" fill="var(--muted)">'+lvl.label+'</text>';
+      for(let k=0;k<lvl.deg;k++){
+        const cx = dotsX0 + k*dotGap;
+        if(k<filled){
+          s += '<circle cx="'+cx+'" cy="'+y+'" r="'+dotR+'" fill="var(--gold)" stroke="#1a1300" stroke-width="0.8"/>';
+        } else {
+          s += '<circle cx="'+cx+'" cy="'+y+'" r="'+dotR+'" fill="none" stroke="var(--muted)" stroke-width="1"/>';
+        }
+      }
+    });
+    shellSvg.setAttribute('viewBox','0 0 460 '+svgH);
+    shellSvg.innerHTML = s;
+  }
+
+  function drawChips(N){
+    magicChips.innerHTML = magicNumbers.map(m=>{
+      let cls = 'nm-chip';
+      if(N===m) cls+=' hit'; else if(N>=m) cls+=' closed';
+      return '<span class="'+cls+'">'+m+'</span>';
+    }).join('');
+  }
+
+  function updateShell(){
+    const N = parseInt(nShellSlider.value,10);
+    nShellVal.textContent = N;
+    drawShell(N);
+    drawChips(N);
+    if(magicNumbers.includes(N)){
+      magicMsg.className='nm-magic-msg hit';
+      magicMsg.textContent = '✨ N = '+N+' is a magic number — this shell is exactly full. Nuclei with magic proton or neutron counts (and "doubly magic" ones like Z=N=magic) are unusually stable.';
+    } else {
+      const next = magicNumbers.find(m=>m>N);
+      magicMsg.className='nm-magic-msg';
+      magicMsg.textContent = next ? ('Currently mid-shell. Next magic number is '+next+' ('+(next-N)+' more nucleons would close this shell).') : 'At the top of the modeled range.';
+    }
+  }
+  nShellSlider.addEventListener('input', updateShell);
+  updateShell();
+
+})();
+</script>
+
+</main>
+</body>
+</html>
